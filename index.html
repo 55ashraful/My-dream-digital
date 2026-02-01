@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Dream Digital E-learning Platform</title>
+    
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #4A00E0; /* Dark Purple */
+            --accent: #E91E63;  /* Pink */
+            --dark: #2c3e50;
+            --light: #f5f6fa;
+            --white: #ffffff;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --radius: 10px;
+            --primary-rgb: 74, 0, 224;
+            --accent-rgb: 233, 30, 99;
+            --dark-rgb: 44, 62, 80;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            background-image: url('https://i.ibb.co/HppJ896S/1000030567.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            overflow-x: hidden;
+        }
+
+        /* --- Utility Classes --- */
+        .hidden { display: none !important; }
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 600; transition: 0.2s; text-transform: uppercase; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-accent { background: var(--accent); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-dark { background: var(--dark); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; width: auto; }
+        .btn:active { transform: scale(0.98); }
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 20px; }
+        .mb-2 { margin-bottom: 20px; }
+        
+        /* --- Header --- */
+        header { background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--primary); font-size: 1.1rem; }
+        .logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .menu-icon { font-size: 1.5rem; cursor: pointer; color: var(--primary); }
+        
+        /* Mobile Menu */
+        .mobile-menu { background: white; padding: 10px; display: none; border-top: 1px solid #eee; }
+        .mobile-menu a { display: block; padding: 12px; text-decoration: none; color: var(--dark); font-weight: 500; border-bottom: 1px solid #f5f5f5; }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a.login-btn-menu { background: var(--accent); color: white; text-align: center; border-radius: 5px; }
+        .mobile-menu a.signup-btn-menu { background: var(--primary); color: white; text-align: center; border-radius: 5px; margin-top: 5px;}
+        .mobile-menu a.admin-btn-menu { background: var(--dark); color: white; text-align: center; border-radius: 5px; margin-top: 5px;}
+
+        /* --- Main Content --- */
+        .main-content { padding-top: 20px; }
+        .intro-section {
+            text-align: center; padding: 20px; background-color: rgba(255,255,255,0.1); 
+            min-height: 350px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; border-radius: var(--radius); margin-bottom: 20px; position: relative; overflow: hidden;
+        }
+        .intro-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(44, 62, 80, 0.6); z-index: 1; border-radius: var(--radius);
+        }
+        #canvas-3d { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .intro-content { position: relative; z-index: 2; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 15px; backdrop-filter: blur(2px); }
+        .intro-section h1 { color: var(--white); font-size: 1.8rem; margin-bottom: 10px; }
+        .intro-section h1 span { color: var(--accent); }
+        .intro-section p { font-size: 0.9rem; color: var(--light); margin-bottom: 15px; line-height: 1.4; }
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .section-header h2 { color: var(--danger); }
+
+        /* --- Course Cards --- */
+        .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .course-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+        .course-img { width: 100%; height: 150px; object-fit: cover; }
+        .course-body { padding: 12px; flex: 1; }
+        .course-title { text-align: center; font-size: 0.95rem; font-weight: 600; line-height: 1.4; }
+
+        /* App Course Row */
+        .course-row-list { display: flex; flex-direction: column; gap: 15px; }
+        .course-row-item {
+            display: flex; align-items: center; background: white; border-radius: var(--radius);
+            padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .course-row-img { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; margin-right: 15px; }
+        .course-row-info { flex: 1; }
+        .course-row-title { font-size: 0.95rem; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+        .course-row-meta { font-size: 0.75rem; color: #888; }
+        .course-row-action { margin-left: 10px; }
+        .course-row-btn {
+            background: var(--primary); color: white; border: none; padding: 8px 16px;
+            border-radius: 20px; font-size: 0.8rem; cursor: pointer; white-space: nowrap;
+        }
+        .course-row-btn.btn-danger { background: var(--danger); } 
+        .course-row-btn.btn-success { background: var(--success); }
+
+        /* --- Notice Board --- */
+        .notice-board { background: white; padding: 15px; border-radius: var(--radius); box-shadow: var(--shadow); margin-top: 25px; }
+        .notice-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: var(--danger); font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .notice-item { background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-size: 0.9rem; }
+        .notice-date { font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block; }
+
+        /* --- Forms --- */
+        .auth-container { background: white; padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow); margin-top: 20px; }
+        .auth-header { text-align: center; margin-bottom: 25px; }
+        .auth-header img { width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px; }
+        .auth-header h2 { font-size: 1.5rem; color: var(--primary); font-weight: 700; }
+        .auth-header p { font-size: 0.9rem; color: #666; margin-top: 5px; }
+        .auth-tabs { display: flex; margin-bottom: 20px; background: #eee; border-radius: 25px; padding: 4px; }
+        .auth-tab { flex: 1; text-align: center; padding: 8px; border-radius: 20px; cursor: pointer; font-weight: 500; font-size: 0.9rem; }
+        .auth-tab.active { background: var(--primary); color: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 5px; color: #555; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; }
+        
+        .dashboard-card { background: var(--white); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; }
+        .dashboard-card h3 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+        .student-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 5px; margin-bottom: 8px; background: #f9f9f9; }
+        
+        /* --- App View --- */
+        .app-view-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #f0f2f5; display: none; flex-direction: column; z-index: 1500;
+        }
+        .app-top-bar {
+            background-color: var(--white); height: 60px; display: flex; align-items: center; padding: 0 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); justify-content: space-between; position: relative; z-index: 1502;
+        }
+        .top-left-icon { font-size: 1.5rem; color: var(--dark); cursor: pointer; }
+        .app-title { font-size: 1.2rem; font-weight: 700; color: var(--primary); position: absolute; left: 50%; transform: translateX(-50%); }
+        .app-content-area { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 80px; }
+        .app-bottom-nav {
+            height: 65px; background-color: var(--white); display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid #e0e0e0; position: fixed; bottom: 0; width: 100%; z-index: 1502;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+        }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; border: none; background: none; color: #888; font-size: 0.75rem; cursor: pointer; transition: color 0.2s; width: 25%; }
+        .nav-btn i { font-size: 1.4rem; margin-bottom: 4px; }
+        .nav-btn.active { color: var(--primary); }
+        .nav-btn.active i { transform: translateY(-2px); }
+        .app-section { display: none; }
+        .app-section.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Profile */
+        .profile-card {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; padding: 30px 20px; border-radius: 15px; text-align: center; margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(74, 0, 224, 0.3);
+        }
+        .profile-pic-lg { width: 80px; height: 80px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; background: #fff; }
+        .referral-box { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
+        .referral-code-display { font-size: 1.2rem; font-weight: bold; color: var(--success); letter-spacing: 2px; margin: 10px 0; display: block; }
+        .ref-actions { display: flex; gap: 10px; justify-content: center; }
+
+        /* Sidebar */
+        .user-sidebar {
+            position: fixed; left: -280px; top: 0; width: 280px; height: 100vh; background: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.15); z-index: 1600; transition: left 0.3s ease-in-out; padding-top: 20px; overflow-y: auto;
+        }
+        .user-sidebar.open { left: 0; }
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+            z-index: 1550; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .sidebar-overlay.visible { opacity: 1; visibility: visible; }
+        .sidebar-header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        .sidebar-header img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; margin-bottom: 10px;}
+        .sidebar-header h3 { color: var(--dark); font-size: 1.1rem; }
+        .sidebar-links a { display: block; padding: 15px 20px; text-decoration: none; color: var(--dark); font-weight: 500; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center; gap: 10px;}
+        .sidebar-links a i { color: var(--accent); width: 20px; text-align: center;}
+        .sidebar-logout { background: var(--danger); color: white; margin: 20px; text-align: center; border-radius: 8px; padding: 12px; cursor: pointer; }
+
+        /* --- Footer & Toast --- */
+        footer { background: var(--dark); padding: 30px 20px 20px 20px; margin-top: 40px; text-align: center; color: var(--light); }
+        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 4px; padding: 16px; position: fixed; z-index: 3001; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; }
+        #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header">
+        <div class="nav-bar">
+            <div class="logo">
+                <img src="https://i.ibb.co/V0JySf5Y/1000030552.jpg" alt="Logo">
+                <span>My Dream Digital</span>
+            </div>
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#" onclick="showPage('home')">Home</a>
+            <a href="#">About Us</a>
+            <a href="#" onclick="showPage('contact')">Contact</a>
+            <a href="#" onclick="showPage('login')" class="login-btn-menu">Login</a>
+            <a href="#" onclick="showPage('signup')" class="signup-btn-menu">Sign Up</a>
+            <a href="#" onclick="showPage('admin')" class="admin-btn-menu">Sub Admin Login</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container" id="main-container">
+
+        <!-- 1. Home Page -->
+        <section id="home-page" class="main-content">
+            <div class="intro-section">
+                <div id="canvas-3d"></div>
+                <div class="intro-content">
+                    <h1>My Dream Digital <span>E-learning</span> Platform</h1>
+                    <p>Transform your leisure time into a simple, smartphone-based journey of learning and earning.</p>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="showPage('login')">Login</button>
+                        <button class="btn btn-accent" onclick="showPage('signup')">Sign Up</button>
+                        <button class="btn btn-dark" onclick="showPage('shop')">Shop Now</button>
+                        <button class="btn btn-accent" onclick="downloadApp()">App Download</button>
+                    </div>
+                </div>
+            </div>
+            <div class="section-header mt-2">
+                <h2>Our Popular Courses</h2>
+            </div>
+            <div id="course-list-container" class="course-grid"></div>
+        </section>
+
+        <!-- 2. Login Page -->
+        <section id="login-page" class="hidden">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <img src="https://i.ibb.co/V0JySf5Y/1000030552.jpg" alt="Logo">
+                    <h2>My Dream Digital</h2>
+                    <p>Sign in to continue</p>
+                </div>
+                <!-- Removed Phone Tab for simplicity, focusing on ID/Email login as requested -->
+                <div class="auth-tabs">
+                    <div id="tab-id-email" class="auth-tab active" onclick="switchLoginTab('id-email')">ID / Email</div>
+                    <div id="tab-phone" class="auth-tab" onclick="switchLoginTab('phone')">Phone</div>
+                </div>
+                
+                <form id="id-email-login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Student ID or Email*</label>
+                        <input type="text" id="login-identifier" class="form-control" placeholder="ID (e.g. 17154...) or Email" required>
+                    </div>
+                    <div class="form-group"><label>Password*</label><input type="password" id="login-password-id" class="form-control" placeholder="******" required></div>
+                    <button type="submit" class="btn btn-primary mt-2">Sign In</button>
+                </form>
+
+                <form id="phone-login-form" onsubmit="handleLogin(event)" class="hidden">
+                    <div class="form-group"><label>Phone Number*</label><input type="number" id="login-phone" class="form-control" placeholder="01XXXXXXXXX" required></div>
+                    <div class="form-group"><label>OTP* (Will be sent via SMS)</label><input type="number" id="otp-input" class="form-control" placeholder="Enter OTP" required></div>
+                    <div id="sign-in-button"></div> 
+                    <button type="submit" class="btn btn-primary mt-2">Sign In</button>
+                </form>
+
+                <div class="text-center mt-2"><a href="#" style="color: var(--primary); text-decoration: none;" onclick="showPage('signup')">New user? Create an account</a></div>
+            </div>
+        </section>
+
+        <!-- 3. Sign Up Page -->
+        <section id="signup-page" class="hidden">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <img src="https://i.ibb.co/V0JySf5Y/1000030552.jpg" alt="Logo">
+                    <h2>My Dream Digital</h2>
+                    <p>New here? Signing up is easy</p>
+                </div>
+                <form id="signup-form" onsubmit="handleSignup(event)">
+                    <div class="form-group"><label>Your Name*</label><input type="text" id="signup-name" class="form-control" required></div>
+                    <div class="form-group"><label>Phone Number (WhatsApp)*</label><input type="number" id="signup-phone" class="form-control" placeholder="01XXXXXXXXX" required></div>
+                    <div class="form-group"><label>Email*</label><input type="email" id="signup-email" class="form-control" placeholder="example@gmail.com" required></div>
+                    <div class="form-group"><label>Password*</label><input type="password" id="signup-password" class="form-control" required></div>
+                    <div class="form-group">
+                        <label>Referral Code (Optional)</label>
+                        <input type="text" id="signup-referral" class="form-control" placeholder="Enter Student ID if you have">
+                        <small style="color: #888;">If entered, code will be validated.</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Sign Up</button>
+                </form>
+                <div class="text-center mt-2"><a href="#" style="color: var(--primary); text-decoration: none;" onclick="showPage('login')">Already have an account? Login</a></div>
+            </div>
+        </section>
+
+        <!-- 4. Sub-Admin Login Page -->
+        <section id="admin-page" class="hidden">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <img src="https://i.ibb.co/V0JySf5Y/1000030552.jpg" alt="Logo">
+                    <h2>My Dream Digital</h2>
+                    <p>Sub-Admin Login</p>
+                </div>
+                <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
+                    <div class="form-group">
+                        <label>Select Your Role*</label>
+                        <select id="admin-role" class="form-control" required>
+                            <option value="" disabled selected>-- Select a Role --</option>
+                            <option value="Counselor">Counselor</option>
+                            <option value="Senior Team Leader">Senior Team Leader</option>
+                            <option value="Team Leader">Team Leader</option>
+                            <option value="Trainer">Trainer</option>
+                            <option value="Teacher">Teacher</option>
+                            <option value="Account Manager">Account Manager</option>
+                            <option value="Photo editing teacher">Photo editing teacher</option>
+                            <option value="Video editing teacher">Video editing teacher</option>
+                            <option value="Senior counselor">Senior counselor</option>
+                            <option value="Helpline">Helpline</option>
+                            <option value="Web developer">Web developer</option>
+                            <option value="Marketing team">Marketing team</option>
+                            <option value="Qualification team">Qualification team</option>
+                            <option value="Senior teacher">Senior teacher</option>
+                            <option value="Senior Manager">Senior Manager</option>
+                            <option value="Counsellor Manager">Counsellor Manager</option>
+                            <option value="Marketing Manager">Marketing Manager</option>
+                            <option value="Accountant">Accountant</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Phone Number*</label><input type="number" id="sub-admin-phone-number" class="form-control" placeholder="01XXXXXXXXX" required></div>
+                    <div class="form-group"><label>Password*</label><input type="password" id="sub-admin-password" class="form-control" required></div>
+                    <button type="submit" class="btn btn-primary mt-2">Sign In</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 5. Admin Dashboard Page -->
+        <section id="admin-dashboard-page" class="hidden">
+            <h2 class="text-center" style="margin-bottom: 20px;">Sub-Admin Dashboard</h2>
+            
+            <div class="dashboard-card">
+                <h3><i class="fas fa-link"></i> Post Class Link</h3>
+                <form onsubmit="postCourseLink(event)">
+                    <div class="form-group"><label>Select Course</label><select id="link-course-select" class="form-control" required></select></div>
+                    <div class="form-group"><label>Meeting/Class Link</label><input type="url" id="course-link-url" class="form-control" placeholder="https://meet.google.com/..." required></div>
+                    <button type="submit" class="btn btn-success">Update Link</button>
+                </form>
+            </div>
+
+            <div class="dashboard-card">
+                <h3><i class="fas fa-bullhorn"></i> Post Notice</h3>
+                <form onsubmit="postNotice(event)">
+                    <div class="form-group"><label>Select Course</label><select id="notice-course-select" class="form-control" required></select></div>
+                    <div class="form-group"><label>Notice Message</label><textarea id="notice-text" class="form-control" rows="3" placeholder="Enter class time or schedule..." required></textarea></div>
+                    <button type="submit" class="btn btn-primary">Post Notice</button>
+                </form>
+            </div>
+
+            <div class="dashboard-card">
+                <h3><i class="fas fa-user-plus"></i> Create New Student ID</h3>
+                <form id="create-student-form" onsubmit="createStudent(event)">
+                    <div class="form-group"><label>Student's Name</label><input type="text" id="new-student-name" class="form-control" required></div>
+                    <div class="form-group"><label>Student's Phone Number</label><input type="number" id="new-student-phone" class="form-control" required></div>
+                    <div class="form-group"><label>Student's Password</label><input type="password" id="new-student-password" class="form-control" required></div>
+                    <button type="submit" class="btn btn-primary">Create ID</button>
+                </form>
+            </div>
+            
+            <div class="dashboard-card">
+                <h3><i class="fas fa-users"></i> All Students List</h3>
+                <div id="student-list-container"></div>
+            </div>
+            <button class="btn btn-danger mt-2" onclick="logout()">Logout</button>
+        </section>
+
+        <!-- 6. Contact Page -->
+        <section id="contact-page" class="hidden main-content">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <img src="https://i.ibb.co/V0JySf5Y/1000030552.jpg" alt="Logo">
+                    <h2>Contact Us</h2>
+                </div>
+                <p class="text-center" style="color: #666; margin-bottom: 20px;">Have questions or need support? Reach out to us!</p>
+                <form onsubmit="sendContactMessage(event)">
+                    <div class="form-group"><label>Your Name*</label><input type="text" class="form-control" placeholder="Enter your name" required></div>
+                    <div class="form-group"><label>Your Email*</label><input type="email" class="form-control" placeholder="Enter your email" required></div>
+                    <div class="form-group"><label>Subject*</label><input type="text" class="form-control" placeholder="Subject of your message" required></div>
+                    <div class="form-group"><label>Your Message*</label><textarea rows="5" class="form-control" placeholder="Type your message here..." required></textarea></div>
+                    <button type="submit" class="btn btn-primary mt-2">Send Message</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 7. Student Dashboard Page (App View) -->
+    <section id="user-dashboard-page" class="app-view-container">
+        
+        <div class="app-top-bar">
+            <div class="top-left-icon" onclick="toggleAppSidebar()"><i class="fas fa-bars"></i></div>
+            <div class="app-title" id="app-header-title">My Team</div>
+            <div class="top-left-icon" style="visibility: hidden;"></div>
+        </div>
+
+        <div class="app-content-area">
+            
+            <div id="app-section-team" class="app-section active">
+                <div style="text-align: center; margin-bottom: 20px; color: #666;"><p>Your Team Members</p></div>
+                <div id="team-list-container">
+                    <div class="team-list-item" style="background:white; padding:15px; border-radius:10px; display:flex; align-items:center; margin-bottom:10px;">
+                        <img src="https://i.ibb.co/V0JySf5Y/1000030552.jpg" style="width:50px; height:50px; border-radius:50%; margin-right:15px;">
+                        <div><strong>Admin</strong><br><small>Senior Manager</small></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="app-section-home" class="app-section">
+                 <div class="profile-card">
+                    <h3>Welcome Back!</h3>
+                    <p>My Dream Digital</p>
+                 </div>
+                 <h4 style="margin-bottom: 10px;">My Courses</h4>
+                 <div id="app-course-list" class="course-row-list"></div>
+
+                 <div class="notice-board">
+                     <div class="notice-header"><i class="fas fa-bell"></i> Notice Board</div>
+                     <div id="notice-container"><p class="text-center" style="color:#999; font-size:0.8rem;">No notices right now.</p></div>
+                 </div>
+            </div>
+
+            <div id="app-section-wallet" class="app-section">
+                <div class="wallet-card" style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                    <h3>Total Balance</h3>
+                    <div class="balance-amount" style="font-size: 2rem; font-weight: 700; color: var(--success); margin: 10px 0;">৳ <span id="wallet-balance">0.00</span></div>
+                    <p style="color: #888;">Minimum withdrawal: ৳ 500</p>
+                </div>
+            </div>
+
+            <div id="app-section-profile" class="app-section">
+                <div class="profile-card">
+                    <img id="app-profile-pic" src="https://via.placeholder.com/80" class="profile-pic-lg" alt="Profile">
+                    <h2 id="app-profile-name">Guest User</h2>
+                    <p id="app-profile-id">ID: N/A</p>
+                </div>
+                
+                <div class="referral-box">
+                    <h4>Refer & Earn</h4>
+                    <span class="referral-code-display" id="my-referral-code">N/A</span>
+                    <div class="ref-actions">
+                        <button class="btn btn-primary btn-sm" onclick="copyReferral()"><i class="fas fa-copy"></i> Copy</button>
+                        <button class="btn btn-success btn-sm" onclick="shareReferral()"><i class="fas fa-share-alt"></i> Share</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="detail-item"><span>Name:</span><strong id="app-detail-name">...</strong></div>
+                    <div class="detail-item"><span>Phone:</span><strong id="app-detail-phone">...</strong></div>
+                    <div class="detail-item"><span>Email:</span><strong id="app-detail-email">...</strong></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="app-bottom-nav">
+            <button class="nav-btn" onclick="switchAppTab('home')" id="nav-btn-home"><i class="fas fa-home"></i><span>Home</span></button>
+            <button class="nav-btn" onclick="switchAppTab('team')" id="nav-btn-team"><i class="fas fa-users"></i><span>Team</span></button>
+            <button class="nav-btn" onclick="switchAppTab('wallet')" id="nav-btn-wallet"><i class="fas fa-wallet"></i><span>Wallet</span></button>
+            <button class="nav-btn" onclick="switchAppTab('profile')" id="nav-btn-profile"><i class="fas fa-user"></i><span>Profile</span></button>
+        </div>
+
+        <div id="app-sidebar-overlay" class="sidebar-overlay" onclick="toggleAppSidebar()"></div>
+        <div id="app-sidebar-drawer" class="user-sidebar">
+            <div class="sidebar-header">
+                <img id="sidebar-profile-pic" src="https://via.placeholder.com/70" alt="Profile">
+                <h3 id="sidebar-user-name">Guest</h3>
+                <span style="font-size: 0.85rem; color: #777;">Student</span>
+            </div>
+            <div class="sidebar-links">
+                <a href="#" onclick="switchAppTab('home'); toggleAppSidebar();"><i class="fas fa-home"></i> Home</a>
+                <a href="#" onclick="switchAppTab('team'); toggleAppSidebar();"><i class="fas fa-users"></i> My Team</a>
+                <a href="#" onclick="switchAppTab('wallet'); toggleAppSidebar();"><i class="fas fa-wallet"></i> Wallet</a>
+                <a href="#" onclick="switchAppTab('profile'); toggleAppSidebar();"><i class="fas fa-user-cog"></i> Settings</a>
+            </div>
+            <div class="sidebar-logout" onclick="logout()">Logout</div>
+        </div>
+    </section>
+
+    <footer id="main-footer">
+        <div class="container">
+            <h4>My Dream Digital E-learning Platform</h4>
+        </div>
+    </footer>
+
+    <div id="student-id-card-overlay" class="hidden">
+        <div class="id-card-content">
+            <img src="https://i.ibb.co/V0JySf5Y/1000030552.jpg" alt="Logo">
+            <h2>Registration Successful!</h2>
+            <div class="details-list">
+                <div class="detail-item"><span>Name:</span><strong id="card-student-name"></strong></div>
+                <div class="detail-item"><span>Phone:</span><strong id="card-student-phone"></strong></div>
+                <div class="detail-item"><span>Email:</span><strong id="card-student-email"></strong></div>
+                <div class="detail-item"><span>Student ID:</span><strong id="card-student-id"></strong></div>
+                <div class="detail-item"><span>Password:</span><strong id="card-student-password"></strong></div>
+                <div class="detail-item"><span>Referral Code:</span><strong id="card-student-referral"></strong></div>
+            </div>
+            <button class="btn btn-primary mt-2" onclick="hideIdCard()">Login Now</button>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyB8aEO4CyIP6l4kspuo_sJUMTwUzp0NvzU",
+          authDomain: "my-income-d85b2.firebaseapp.com",
+          databaseURL: "https://my-income-d85b2-default-rtdb.firebaseio.com",
+          projectId: "my-income-d85b2",
+          storageBucket: "my-income-d85b2.firebasestorage.app",
+          messagingSenderId: "731557596083",
+          appId: "1:731557596083:web:0f2c25edd8c87dfcd359c6",
+          measurementId: "G-CR12TD3VCJ"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+
+        let currentLoggedInUserType = null; 
+        let currentLoggedInUser = null; 
+        let courseLinks = {};
+
+        const coursesData = [
+            { id: 1, title: "Quran Learning and Earning", img: "https://i.ibb.co/YBh2bjNJ/1000030572.jpg" },
+            { id: 2, title: "Pen And Pencil Packing", img: "https://i.ibb.co/CKXWHj74/1000030579.jpg" },
+            { id: 3, title: "Watching videos on YT, FB & TT", img: "https://i.ibb.co/x83KcJ46/1000030582.jpg" },
+            { id: 4, title: "Photo editing", img: "https://i.ibb.co/QFnnjMr6/1000030647.jpg" },
+            { id: 5, title: "Graphic design", img: "https://i.ibb.co/mCQFRbpP/1000030648.jpg" },
+            { id: 6, title: "Social marketing", img: "https://i.ibb.co/fVzs0GQt/1000030649.jpg" },
+            { id: 7, title: "Facebook marketing", img: "https://i.ibb.co/LXGmWLrM/1000030650.jpg" }
+        ];
+
+        function generateNumericId() { return Date.now(); }
+
+        function renderCourses() {
+            const mainContainer = document.getElementById('course-list-container');
+            if (mainContainer) {
+                mainContainer.innerHTML = '';
+                coursesData.forEach(course => {
+                    const card = document.createElement('div');
+                    card.className = 'course-card';
+                    card.innerHTML = `<img src="${course.img}" class="course-img" alt="${course.title}"><div class="course-body"><div class="course-title">${course.title}</div><button class="btn btn-primary btn-sm mt-2" onclick="enrollCourse()">VIEW DETAILS</button></div>`;
+                    mainContainer.appendChild(card);
+                });
+            }
+            renderAppCourses();
+        }
+
+        function renderAppCourses() {
+            const appContainer = document.getElementById('app-course-list');
+            if (appContainer) {
+                appContainer.innerHTML = '';
+                coursesData.forEach(course => {
+                    const row = document.createElement('div');
+                    row.className = 'course-row-item';
+                    const hasLink = courseLinks && courseLinks[course.id] && courseLinks[course.id].trim() !== "";
+                    const btnClass = hasLink ? 'btn-success' : 'btn-danger';
+                    const btnText = hasLink ? 'OPEN' : 'JOIN';
+                    const clickAction = hasLink ? `openCourseLink('${courseLinks[course.id]}')` : `showToast("Class link not available yet")`;
+
+                    row.innerHTML = `
+                        <img src="${course.img}" class="course-row-img" alt="${course.title}">
+                        <div class="course-row-info">
+                            <div class="course-row-title">${course.title}</div>
+                            <div class="course-row-meta">Duration: 3 Months</div>
+                        </div>
+                        <div class="course-row-action">
+                            <button class="course-row-btn ${btnClass}" onclick="${clickAction}">${btnText}</button>
+                        </div>
+                    `;
+                    appContainer.appendChild(row);
+                });
+            }
+        }
+
+        function openCourseLink(url) { window.open(url, '_blank'); }
+
+        function populateCourseSelects() {
+            const linkSelect = document.getElementById('link-course-select');
+            const noticeSelect = document.getElementById('notice-course-select');
+            if(linkSelect) linkSelect.innerHTML = '<option value="" disabled selected>-- Select Course --</option>';
+            if(noticeSelect) noticeSelect.innerHTML = '<option value="" disabled selected>-- Select Course --</option>';
+            coursesData.forEach(c => {
+                if(linkSelect) linkSelect.innerHTML += `<option value="${c.id}">${c.title}</option>`;
+                if(noticeSelect) noticeSelect.innerHTML += `<option value="${c.id}">${c.title}</option>`;
+            });
+        }
+
+        function postCourseLink(e) {
+            e.preventDefault();
+            const courseId = document.getElementById('link-course-select').value;
+            const url = document.getElementById('course-link-url').value;
+            if(!courseId || !url) return;
+            database.ref('courses_links').child(courseId).set(url).then(() => {
+                showToast("Link Posted Successfully!");
+                document.getElementById('course-link-url').value = '';
+            }).catch(err => showToast(err.message));
+        }
+
+        function postNotice(e) {
+            e.preventDefault();
+            const courseId = document.getElementById('notice-course-select').value;
+            const msg = document.getElementById('notice-text').value;
+            if(!courseId || !msg) return;
+            database.ref('notices').push({
+                courseId: courseId,
+                message: msg,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+            document.getElementById('notice-text').value = '';
+            showToast('Notice Posted!');
+        }
+
+        function renderNotices() {
+            const noticeContainer = document.getElementById('notice-container');
+            const noticesRef = database.ref('notices').orderByChild('timestamp').limitToLast(10);
+            noticesRef.on('value', (snapshot) => {
+                noticeContainer.innerHTML = '';
+                if(!snapshot.exists()) {
+                    noticeContainer.innerHTML = '<p class="text-center" style="color:#999; font-size:0.8rem;">No notices right now.</p>';
+                    return;
+                }
+                const notices = [];
+                snapshot.forEach(child => notices.push(child.val()));
+                notices.reverse().forEach(notice => {
+                    const course = coursesData.find(c => c.id == notice.courseId);
+                    const courseName = course ? course.title : "General Course";
+                    
+                    const div = document.createElement('div');
+                    div.className = 'notice-item';
+                    const date = new Date(notice.timestamp).toLocaleDateString() + ' ' + new Date(notice.timestamp).toLocaleTimeString();
+                    div.innerHTML = `<span class="notice-date">${date} - ${courseName}</span><p>${notice.message}</p>`;
+                    noticeContainer.appendChild(div);
+                });
+            });
+        }
+
+        function fetchCourseLinks() {
+            database.ref('courses_links').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    courseLinks = snapshot.val();
+                    renderAppCourses();
+                }
+            });
+        }
+
+        function fetchUserBalance() {
+            if(!currentLoggedInUser || !currentLoggedInUser.uid) return;
+            database.ref('students').child(currentLoggedInUser.uid).child('balance').on('value', snapshot => {
+                const balance = snapshot.val() || 0;
+                const el = document.getElementById('wallet-balance');
+                if(el) el.innerText = balance.toFixed(2);
+            });
+        }
+
+        // --- Three.js ---
+        function init3D() {
+            const container = document.getElementById('canvas-3d');
+            if(!container) return;
+            const scene = new THREE.Scene();
+            scene.background = null;
+            const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+            camera.position.z = 5;
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            container.appendChild(renderer.domElement);
+            const group = new THREE.Group();
+            scene.add(group);
+            const textureLoader = new THREE.TextureLoader();
+            const geometry = new THREE.PlaneGeometry(1.5, 1.5);
+            coursesData.forEach((course, index) => {
+                textureLoader.load(course.img, (texture) => {
+                    const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                    const mesh = new THREE.Mesh(geometry, material);
+                    const angle = (index / coursesData.length) * Math.PI * 2;
+                    const radius = 2.5;
+                    mesh.position.x = Math.cos(angle) * radius;
+                    mesh.position.y = Math.sin(angle) * radius;
+                    mesh.lookAt(0, 0, 0);
+                    group.add(mesh);
+                });
+            });
+            function animate() {
+                requestAnimationFrame(animate);
+                group.rotation.y += 0.005;
+                renderer.render(scene, camera);
+            }
+            animate();
+            window.addEventListener('resize', () => {
+                camera.aspect = container.offsetWidth / container.offsetHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.offsetWidth, container.offsetHeight);
+            });
+        }
+
+        // --- UI ---
+        function switchAppTab(tabName) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`nav-btn-${tabName}`).classList.add('active');
+            document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(`app-section-${tabName}`).classList.add('active');
+            const titleMap = { 'home': 'My Dream Digital', 'team': 'My Team', 'wallet': 'My Wallet', 'profile': 'My Profile' };
+            document.getElementById('app-header-title').innerText = titleMap[tabName];
+        }
+
+        function toggleAppSidebar() {
+            const sidebar = document.getElementById('app-sidebar-drawer');
+            const overlay = document.getElementById('app-sidebar-overlay');
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('visible');
+            }
+        }
+
+        function updateAppUI() {
+            if (!currentLoggedInUser) return;
+            const name = currentLoggedInUser.name || 'User';
+            const id = (currentLoggedInUser.id || currentLoggedInUser.uid || 'N/A').toString(); 
+            const phone = currentLoggedInUser.phone || 'N/A';
+            const email = currentLoggedInUser.email || 'N/A';
+            const pic = currentLoggedInUser.profilePicUrl || 'https://via.placeholder.com/80';
+
+            document.getElementById('app-profile-name').innerText = name;
+            document.getElementById('app-profile-id').innerText = `ID: ${id}`;
+            document.getElementById('app-profile-pic').src = pic;
+            document.getElementById('my-referral-code').innerText = id;
+            document.getElementById('app-detail-name').innerText = name;
+            document.getElementById('app-detail-phone').innerText = phone;
+            document.getElementById('app-detail-email').innerText = email;
+            document.getElementById('sidebar-user-name').innerText = name;
+            document.getElementById('sidebar-profile-pic').src = pic;
+            fetchUserBalance();
+        }
+
+        function showPage(pageName) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            const menu = document.getElementById('mobileMenu');
+            if (menu) menu.style.display = 'none';
+            
+            let targetPage = pageName;
+            const appView = document.getElementById('user-dashboard-page');
+            const mainHeader = document.getElementById('main-header');
+            const mainFooter = document.getElementById('main-footer');
+
+            if (currentLoggedInUserType === 'student' || currentLoggedInUserType === 'sub-admin') {
+                if (pageName === 'login' || pageName === 'signup' || pageName === 'admin' || pageName === 'home') {
+                    if (currentLoggedInUserType === 'student') { targetPage = 'user-dashboard'; }
+                    else { targetPage = 'admin-dashboard'; }
+                }
+            } else {
+                if (pageName === 'user-dashboard' || pageName === 'admin-dashboard') { targetPage = 'home'; }
+            }
+
+            if (targetPage === 'user-dashboard') {
+                appView.style.display = 'flex';
+                mainHeader.style.display = 'none';
+                mainFooter.style.display = 'none';
+                updateAppUI();
+                switchAppTab('home');
+            } else {
+                appView.style.display = 'none';
+                mainHeader.style.display = 'block';
+                mainFooter.style.display = 'block';
+                const pageId = targetPage + '-page';
+                const pageElement = document.getElementById(pageId);
+                if (pageElement) {
+                    pageElement.classList.remove('hidden');
+                    if (targetPage === 'admin-dashboard') {
+                        populateCourseSelects(); 
+                        renderStudents();
+                    }
+                } else {
+                    if (pageName === 'contact') document.getElementById('contact-page').classList.remove('hidden');
+                    else { showToast(`The '${pageName}' page is coming soon`); document.getElementById('home-page').classList.remove('hidden'); }
+                }
+            }
+            window.scrollTo(0, 0);
+            if (targetPage === 'login') switchLoginTab('id-email');
+        }
+
+        function toggleMenu() { const menu = document.getElementById('mobileMenu'); if (menu) menu.style.display = (menu.style.display === 'block') ? 'none' : 'block'; };
+        
+        window.recaptchaVerifier = null;
+        function switchLoginTab(tabName) {
+            document.getElementById('tab-id-email').classList.toggle('active', tabName === 'id-email');
+            document.getElementById('tab-phone').classList.toggle('active', tabName === 'phone');
+            document.getElementById('id-email-login-form').classList.toggle('hidden', tabName !== 'id-email');
+            document.getElementById('phone-login-form').classList.toggle('hidden', tabName !== 'phone');
+            if (tabName === 'phone') initializeRecaptcha();
+        }
+
+        function initializeRecaptcha() {
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(auth, 'sign-in-button', { 'size': 'invisible', 'callback': (response) => {}, 'expired-callback': () => {} }).render().catch(e => console.log(e));
+            }
+        }
+
+        function saveLoginState(userType, userData) {
+            localStorage.setItem('loggedInUserType', userType);
+            localStorage.setItem('loggedInUser', JSON.stringify(userData));
+        }
+
+        function clearLoginState() {
+            localStorage.removeItem('loggedInUserType');
+            localStorage.removeItem('loggedInUser');
+            currentLoggedInUserType = null;
+            currentLoggedInUser = null;
+        }
+
+        // --- AUTHENTICATION LOGIC (UPDATED) ---
+        async function handleLogin(e) {
+            e.preventDefault();
+            const isIdOrEmailLogin = document.getElementById('tab-id-email').classList.contains('active');
+            const identifier = document.getElementById('login-identifier').value.trim();
+            const password = document.getElementById('login-password-id').value;
+            const phoneNumber = !isIdOrEmailLogin ? document.getElementById('login-phone').value.trim() : null;
+            const otp = !isIdOrEmailLogin ? document.getElementById('otp-input').value.trim() : null;
+
+            if (!identifier && !phoneNumber) { showToast("Please enter ID/Email or Phone."); return; }
+            if (isIdOrEmailLogin && !password) { showToast("Please enter password."); return; }
+
+            try {
+                let userCredential, fetchedUserData;
+                
+                // 1. Login via ID or Email
+                if (isIdOrEmailLogin) {
+                    let email = identifier;
+                    // Check if identifier is Numeric ID
+                    if (!identifier.includes('@') && !isNaN(identifier)) {
+                        // It is an ID. Find email from DB.
+                        const snap = await database.ref('students').orderByChild('id').equalTo(Number(identifier)).once('value');
+                        if(snap.exists()) {
+                            snap.forEach(c => email = c.val().email);
+                        } else {
+                            showToast("Invalid Student ID."); return;
+                        }
+                    } else if (!identifier.includes('@')) {
+                         showToast("Invalid ID format"); return;
+                    }
+                    // Login with email
+                    userCredential = await auth.signInWithEmailAndPassword(email, password);
+                    // Fetch full data
+                    const uSnap = await database.ref('students').orderByChild('uid').equalTo(userCredential.user.uid).once('value');
+                    if(uSnap.exists()) uSnap.forEach(c => fetchedUserData = c.val());
+                } 
+                // 2. Login via Phone
+                else {
+                    if(!window.recaptchaVerifier) return;
+                    const cred = firebase.auth.PhoneAuthProvider.credential((await auth.signInWithPhoneNumber('+88'+phoneNumber, window.recaptchaVerifier)).verificationId, otp);
+                    userCredential = await auth.signInWithCredential(cred);
+                    const uSnap = await database.ref('students').orderByChild('uid').equalTo(userCredential.user.uid).once('value');
+                    if(uSnap.exists()) uSnap.forEach(c => fetchedUserData = c.val());
+                }
+
+                if (userCredential && fetchedUserData) {
+                    currentLoggedInUserType = 'student'; 
+                    currentLoggedInUser = fetchedUserData;
+                    saveLoginState('student', fetchedUserData); 
+                    showToast("Welcome!"); 
+                    showPage('user-dashboard');
+                }
+            } catch (error) { showToast("Login Failed: " + error.message); }
+        }
+        
+        async function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value.trim();
+            const phone = document.getElementById('signup-phone').value.trim();
+            const email = document.getElementById('signup-email').value.trim(); 
+            const password = document.getElementById('signup-password').value;
+            const referral = document.getElementById('signup-referral').value.trim();
+
+            if (!name || !phone || !email || !password) { showToast("Fill all fields."); return; }
+
+            // REFERRAL VALIDATION
+            let referrerUid = null;
+            if (referral) {
+                const refSnap = await database.ref('students').orderByChild('id').equalTo(Number(referral)).once('value');
+                if (refSnap.exists()) {
+                    refSnap.forEach(child => {
+                        referrerUid = child.val().uid;
+                    });
+                } else {
+                    showToast("Invalid Referral Code! Please check.");
+                    return; // Stop signup
+                }
+            }
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                const numericId = generateNumericId();
+                
+                const studentRef = database.ref('students').push(); 
+                const newStudentData = {
+                    uid: user.uid, 
+                    id: numericId, 
+                    name: name, 
+                    phone: phone, 
+                    email: email, 
+                    referral: referral || 'N/A',
+                    balance: 0, 
+                    profilePicUrl: 'https://via.placeholder.com/100', 
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                };
+                await studentRef.set(newStudentData);
+
+                // ADD REFERRAL BONUS if valid
+                if (referrerUid) {
+                    const bonus = 10; // Example amount
+                    database.ref('students').child(referrerUid).transaction(function(currentBalance) {
+                        return (currentBalance || 0) + bonus;
+                    });
+                    // Log bonus history (Optional logic)
+                }
+
+                document.getElementById('card-student-name').innerText = name;
+                document.getElementById('card-student-phone').innerText = phone;
+                document.getElementById('card-student-email').innerText = email;
+                document.getElementById('card-student-id').innerText = numericId;
+                document.getElementById('card-student-password').innerText = password;
+                document.getElementById('card-student-referral').innerText = referral || 'N/A';
+                document.getElementById('student-id-card-overlay').classList.remove('hidden');
+                
+                currentLoggedInUserType = 'student'; 
+                currentLoggedInUser = newStudentData;
+                saveLoginState('student', newStudentData);
+                document.getElementById('signup-form').reset();
+            } catch (error) { showToast("Signup Failed: " + error.message); }
+        }
+
+        function hideIdCard() { document.getElementById('student-id-card-overlay').classList.add('hidden'); showPage('user-dashboard'); }
+        function enrollCourse() { if (!currentLoggedInUserType) { showToast(`Please log in`); showPage('login'); } }
+        function downloadApp() { if (confirm("Download app.apk?")) showToast("Download started..."); }
+        function showToast(msg) {
+            const x = document.getElementById("toast"); if (!x) return;
+            x.innerText = msg; x.className = "show";
+            setTimeout(function(){ if(x) x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+        // --- ADMIN & DATA LOGIC ---
+        function renderStudents() {
+            const container = document.getElementById('student-list-container');
+            if(!container) return;
+            database.ref('students').on('value', (snapshot) => {
+                container.innerHTML = ''; 
+                if (!snapshot.exists()) { container.innerHTML = '<p class="text-center">No students.</p>'; return; }
+                snapshot.forEach((childSnapshot) => {
+                    const s = childSnapshot.val(); const k = childSnapshot.key; 
+                    container.innerHTML += `<div class="student-list-item"><div><strong>ID: ${s.id}</strong><br><small>${s.name} - Balance: ${s.balance || 0}</small></div><button class="btn btn-danger btn-sm" onclick="deleteStudent('${k}')">Delete</button></div>`;
+                });
+            });
+        }
+        async function createStudent(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-student-name').value.trim();
+            const phone = document.getElementById('new-student-phone').value.trim();
+            const password = document.getElementById('new-student-password').value; 
+            if (!name || !phone || !password) { showToast("Fill all fields"); return; }
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(`${phone}@mydreamdigital.com`, password);
+                const numericId = generateNumericId();
+                const ref = database.ref('students').push();
+                await ref.set({ 
+                    uid: userCredential.user.uid, 
+                    id: numericId, 
+                    name: name, 
+                    phone: phone, 
+                    email: userCredential.user.email, 
+                    balance: 0, 
+                    profilePicUrl: 'https://via.placeholder.com/100' 
+                });
+                showToast('Student Created!'); document.getElementById('create-student-form').reset();
+            } catch (error) { showToast(error.message); }
+        }
+        async function deleteStudent(k) { if(confirm("Delete?")) { await database.ref('students').child(k).remove(); showToast('Deleted'); } }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const role = document.getElementById('admin-role').value;
+            const phone = document.getElementById('sub-admin-phone-number').value.trim();
+            const password = document.getElementById('sub-admin-password').value;
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(`${phone}@mydreamdigital.com`, password);
+                const snapshot = await database.ref('sub_admins').orderByChild('uid').equalTo(userCredential.user.uid).once('value');
+                let found = null;
+                snapshot.forEach(c => { if(c.val().role === role) found = c.val(); });
+                if (found) { currentLoggedInUserType = 'sub-admin'; currentLoggedInUser = found; saveLoginState('sub-admin', found); showPage('admin-dashboard'); }
+                else { showToast("Unauthorized"); }
+            } catch (error) { showToast(error.message); }
+        }
+        
+        function logout() {
+            auth.signOut().then(() => { clearLoginState(); toggleAppSidebar(); showPage('home'); });
+        }
+        function sendContactMessage(e) { e.preventDefault(); showToast("Message Sent!"); document.querySelector('#contact-page form').reset(); }
+        function copyReferral() {
+            const code = currentLoggedInUser ? (currentLoggedInUser.id || "REF123") : "REF123";
+            navigator.clipboard.writeText(code.toString()).then(() => showToast("Referral Code Copied!")).catch(err => showToast("Failed to copy"));
+        }
+        function shareReferral() {
+            const code = currentLoggedInUser ? (currentLoggedInUser.id || "REF123") : "REF123";
+            if (navigator.share) navigator.share({ title: 'Join My Dream Digital', text: `Join using my ID: ${code}`, url: window.location.href }).catch(console.error);
+            else showToast("Sharing not supported");
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCourses();
+            init3D();
+            
+            const savedUserType = localStorage.getItem('loggedInUserType');
+            const savedUserData = localStorage.getItem('loggedInUser');
+
+            if (savedUserType && savedUserData) {
+                try {
+                    currentLoggedInUserType = savedUserType;
+                    currentLoggedInUser = JSON.parse(savedUserData);
+                    auth.onAuthStateChanged(user => {
+                        if (user && currentLoggedInUser && currentLoggedInUser.uid === user.uid) {
+                            if(currentLoggedInUserType === 'student') {
+                                renderNotices();
+                                fetchCourseLinks();
+                                showPage('user-dashboard');
+                            } else {
+                                showPage('admin-dashboard');
+                            }
+                        } else { clearLoginState(); showPage('home'); }
+                    });
+                } catch (e) { clearLoginState(); showPage('home'); }
+            } else {
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        database.ref('students').orderByChild('uid').equalTo(user.uid).once('value').then(snapshot => {
+                            if (snapshot.exists()) {
+                                snapshot.forEach(child => {
+                                    currentLoggedInUser = child.val(); currentLoggedInUserType = 'student'; saveLoginState('student', currentLoggedInUser);
+                                    renderNotices();
+                                    fetchCourseLinks(); 
+                                    showPage('user-dashboard');
+                                });
+                            } else {
+                                database.ref('sub_admins').orderByChild('uid').equalTo(user.uid).once('value').then(snap => {
+                                     if(snap.exists()) { snap.forEach(c => { currentLoggedInUser = c.val(); currentLoggedInUserType = 'sub-admin'; saveLoginState('sub-admin', currentLoggedInUser); showPage('admin-dashboard'); }); }
+                                     else { logout(); }
+                                });
+                            }
+                        });
+                    } else { showPage('home'); }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
