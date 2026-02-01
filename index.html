@@ -525,6 +525,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
     <script>
+        // --- HOSTING LINK CONFIGURATION ---
+        const BASE_URL = "https://my-dream-digital.vercel.app";
+
+        // --- Firebase Configuration ---
         const firebaseConfig = {
           apiKey: "AIzaSyB8aEO4CyIP6l4kspuo_sJUMTwUzp0NvzU",
           authDomain: "my-income-d85b2.firebaseapp.com",
@@ -552,6 +556,19 @@
             { id: 6, title: "Social marketing", img: "https://i.ibb.co/fVzs0GQt/1000030649.jpg" },
             { id: 7, title: "Facebook marketing", img: "https://i.ibb.co/LXGmWLrM/1000030650.jpg" }
         ];
+
+        // --- HELPER: Handle URL Referral Parameter ---
+        function handleUrlReferral() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if (refCode) {
+                const refInput = document.getElementById('signup-referral');
+                if (refInput) {
+                    refInput.value = refCode; 
+                    showToast("Referral code applied automatically!");
+                }
+            }
+        }
 
         function generateNumericId() { return Date.now(); }
 
@@ -830,7 +847,7 @@
             currentLoggedInUser = null;
         }
 
-        // --- AUTHENTICATION LOGIC (UPDATED) ---
+        // --- AUTHENTICATION LOGIC ---
         async function handleLogin(e) {
             e.preventDefault();
             const isIdOrEmailLogin = document.getElementById('tab-id-email').classList.contains('active');
@@ -934,7 +951,6 @@
                     database.ref('students').child(referrerUid).transaction(function(currentBalance) {
                         return (currentBalance || 0) + bonus;
                     });
-                    // Log bonus history (Optional logic)
                 }
 
                 document.getElementById('card-student-name').innerText = name;
@@ -1017,18 +1033,37 @@
             auth.signOut().then(() => { clearLoginState(); toggleAppSidebar(); showPage('home'); });
         }
         function sendContactMessage(e) { e.preventDefault(); showToast("Message Sent!"); document.querySelector('#contact-page form').reset(); }
+        
         function copyReferral() {
             const code = currentLoggedInUser ? (currentLoggedInUser.id || "REF123") : "REF123";
             navigator.clipboard.writeText(code.toString()).then(() => showToast("Referral Code Copied!")).catch(err => showToast("Failed to copy"));
         }
+
         function shareReferral() {
             const code = currentLoggedInUser ? (currentLoggedInUser.id || "REF123") : "REF123";
-            if (navigator.share) navigator.share({ title: 'Join My Dream Digital', text: `Join using my ID: ${code}`, url: window.location.href }).catch(console.error);
-            else showToast("Sharing not supported");
+            
+            // Construct dynamic referral link
+            const fullReferralLink = `${BASE_URL}/?ref=${code}`;
+
+            if (navigator.share) {
+                navigator.share({ 
+                    title: 'Join My Dream Digital', 
+                    text: `Join using my ID: ${code}`, 
+                    url: fullReferralLink 
+                }).catch(console.error);
+            } else {
+                // Fallback: Copy link if share not supported
+                navigator.clipboard.writeText(fullReferralLink).then(() => {
+                    showToast("Referral Link copied to clipboard!");
+                }).catch(() => showToast("Sharing not supported"));
+            }
         }
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', function() {
+            // 1. Check URL for referral code first
+            handleUrlReferral(); 
+            
             renderCourses();
             init3D();
             
