@@ -13,9 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
-        /* =========================================
-           CODE 1 STYLES (Main Website)
-           ========================================= */
         :root {
             --primary: #4A00E0; /* Dark Purple */
             --accent: #E91E63;  /* Pink */
@@ -31,8 +28,8 @@
             --dark-rgb: 44, 62, 80;
 
             /* Colors for the target section */
-            --hero-bg-color: #2c3e50; 
-            --hero-text-color: #b0e0e6; 
+            --hero-bg-color: #2c3e50; /* Dark background from screenshot */
+            --hero-text-color: #b0e0e6; /* Light blue text */
         }
 
         /* --- Global Styles --- */
@@ -79,7 +76,6 @@
             font-weight: 700; 
             color: var(--primary); 
             font-size: 1.4rem; 
-            cursor: pointer;
         }
         .logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
         .menu-icon { font-size: 1.5rem; cursor: pointer; color: var(--primary); z-index: 1001; }
@@ -97,7 +93,7 @@
             top: 100%; 
             right: 0;
             width: 100%;
-            max-width: 280px; 
+            max-width: 250px; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.15); 
             border-radius: 0 0 var(--radius) var(--radius); 
             z-index: 999; 
@@ -120,24 +116,9 @@
         .mobile-menu a:hover {
             background-color: #f0f0f0;
         }
-        
-        /* Added Contact Info styles inside menu (from Code 2 request) */
-        .menu-contact-info {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            font-size: 0.85rem;
-            color: #666;
+        .mobile-menu a:last-of-type { 
+             border-bottom: none; 
         }
-        .menu-contact-info p {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .menu-contact-info i {
-            color: var(--primary);
-        }
-
         .mobile-menu-button {
             width: calc(100% - 30px); 
             margin: 0 15px; 
@@ -153,16 +134,32 @@
             position: relative;
             z-index: 1;
             overflow: hidden;
-            margin-bottom: 5px; 
+            animation: none; 
+            margin-bottom: 5px; /* Added margin-bottom to separate buttons */
         }
         .mobile-menu-button:active {
             transform: scale(0.98);
         }
 
-        .mobile-menu-login-btn { background: var(--accent); box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5); margin-top: 10px; }
-        .mobile-menu-signup-btn { background: var(--primary); box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5); }
-        .mobile-menu-subadmin-btn { background: #007bff; box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); }
-        .mobile-menu-admin-btn { background: #28a745; box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); }
+        .mobile-menu-login-btn { 
+            background: var(--accent); 
+            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5), 0 0 20px rgba(var(--accent-rgb), 0.3); 
+            margin-top: 10px;
+        }
+        .mobile-menu-signup-btn { 
+            background: var(--primary); 
+            box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5), 0 0 20px rgba(var(--primary-rgb), 0.3); 
+        }
+        
+        /* --- New Button Styles --- */
+        .mobile-menu-subadmin-btn { 
+            background: #007bff; /* Example color: Blue */
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5), 0 0 20px rgba(0, 123, 255, 0.3); 
+        }
+        .mobile-menu-admin-btn { 
+            background: #28a745; /* Example color: Green */
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5), 0 0 20px rgba(40, 167, 69, 0.3); 
+        }
 
         /* --- Main Content --- */
         .main-content { padding-top: 20px; }
@@ -191,7 +188,7 @@
             max-width: 320px; 
             margin: 0 auto; 
         }
-
+        
         @keyframes pulse-primary {
             0% { box-shadow: 0 0 8px 0px rgba(var(--primary-rgb), 0.7), 0 0 15px 5px rgba(var(--primary-rgb), 0.6), 0 0 25px 10px rgba(var(--primary-rgb), 0.4); }
             100% { box-shadow: 0 0 12px 0px rgba(var(--primary-rgb), 1), 0 0 25px 8px rgba(var(--primary-rgb), 0.8), 0 0 40px 15px rgba(var(--primary-rgb), 0.6); }
@@ -223,10 +220,45 @@
 
 
         /* --- Home Banners Carousel --- */
-        #home-banner-carousel { margin-bottom: 25px; position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); }
-        .home-banner-item { min-height: 200px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; text-align: center; padding: 30px 20px; border-radius: var(--radius); background-size: cover; background-position: center; position: relative; cursor: pointer; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; flex-shrink: 0; width: 100%; box-sizing: border-box; }
-        .home-banner-item::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 1; border-radius: var(--radius); }
-        .home-banner-item span { position: relative; z-index: 2; padding: 0 15px; }
+        #home-banner-carousel {
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden; 
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .home-banner-item {
+            min-height: 200px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            text-align: center; 
+            padding: 30px 20px; 
+            border-radius: var(--radius); 
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            cursor: pointer; 
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; 
+            flex-shrink: 0; 
+            width: 100%; 
+            box-sizing: border-box;
+        }
+        .home-banner-item::before { 
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3); 
+            z-index: 1;
+            border-radius: var(--radius);
+        }
+        .home-banner-item span {
+            position: relative;
+            z-index: 2;
+            padding: 0 15px; 
+        }
 
         .carousel-nav {
             position: absolute;
@@ -271,8 +303,6 @@
             gap: 10px;
             letter-spacing: 1px;
             border: 2px solid rgba(255,255,255,0.1);
-            margin-top: 30px; 
-            margin-bottom: 30px;
         }
         .section-header-btn:active { transform: scale(0.98); }
         .section-header-btn i { color: #FFD700; }
@@ -465,7 +495,7 @@
         .faq-item.expanded .faq-answer { max-height: 200px; padding: 15px; }
         .faq-item .faq-question:hover { background-color: rgba(255, 255, 255, 0.05); }
 
-        /* --- NEW FOOTER STYLES (Main Website) --- */
+        /* --- NEW FOOTER STYLES --- */
         .footer-container {
             padding: 20px;
             background-color: #000000;
@@ -553,6 +583,8 @@
             z-index: 10;
         }
         
+        /* --- MODIFIED CSS FOR SPINNING ANIMATION --- */
+        
         .plus-glow-btn > i { transition: transform 0.6s ease-in-out; }
         
         .plus-glow-btn:active { transform: scale(0.95); }
@@ -569,27 +601,34 @@
             justify-content: center;
             text-decoration: none;
             
+            /* Centering the icons initially */
             top: 50%;
             left: 50%;
             margin-top: -25px;
             margin-left: -25px;
             
+            /* Initial State: Scaled to 0, Spun -720deg (2 full rotations), Invisible */
             transform: translate(0, 0) scale(0) rotate(-720deg);
             opacity: 0;
             z-index: 9;
             
+            /* Smooth transition for movement, scale and rotation */
             transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
+        /* Plus icon rotates to X when active */
         .glow-btn-container.social-active .plus-glow-btn > i {
             transform: rotate(135deg); 
         }
 
+        /* When active, icons move to position, scale up, and rotate to 0deg */
         .glow-btn-container.social-active .social-icon {
             opacity: 1;
+            /* Scale must be explicitly set to 1 when active */
             transform: translate(0, 0) scale(1) rotate(0deg); 
         }
         
+        /* Icon Colors and Glows */
         .social-icon.discord { background: #5865F2; box-shadow: 0 0 15px #5865F2; }
         .social-icon.youtube { background: #FF0000; box-shadow: 0 0 15px #FF0000; }
         .social-icon.tiktok { background: #000000; box-shadow: 0 0 10px #00f2ea, 0 0 10px #ff0050; }
@@ -597,6 +636,10 @@
         .social-icon.instagram { background: #d62976; box-shadow: 0 0 15px #d62976; }
         .social-icon.whatsapp { background: #25D366; box-shadow: 0 0 15px #25D366; }
         
+        /* Positioning with Rotation Animation: 
+           We use translate to move them from center. 
+           We keep rotate(0deg) so they end up straight. 
+        */
         .glow-btn-container.social-active .discord { 
             transform: translate(0, -85px) scale(1) rotate(0deg); transition-delay: 0.05s; 
         }
@@ -621,484 +664,13 @@
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* =========================================
-           CODE 2 STYLES (Login/Member Area)
-           ========================================= */
-        
-        :root {
-            --primary-gradient: linear-gradient(to right, #6a11cb, #2575fc);
-            --primary-color: #6a11cb;
-            --secondary-color: #2575fc;
-            --text-dark: #333;
-            --text-light: #666;
-            --bg-light: #f7f7f7;
-            --card-bg: #fff;
-            --border-color: #eee;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Page Section Base */
-        .page-section {
-            padding: 20px 0;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .breadcrumbs {
-            font-size: 0.9em;
-            color: var(--text-light);
-            margin-bottom: 10px;
-        }
-
-        .breadcrumbs a {
-            color: var(--text-light);
-            cursor: pointer;
-        }
-        
-        .breadcrumbs a:hover {
-            color: var(--primary-color);
-        }
-
-        h2 {
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--primary-color);
-            text-align: center;
-        }
-
-        /* Card styling for login forms */
-        .card {
-            background-color: var(--card-bg);
-            padding: 30px 25px;
-            border-radius: 10px;
-            box-shadow: var(--box-shadow);
-            margin-bottom: 30px;
-        }
-
-        .card h3 {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--text-dark);
-        }
-
-        .new-user {
-            font-size: 0.9em;
-            margin-bottom: 25px;
-            color: var(--text-light);
-        }
-
-        .new-user a {
-            font-weight: 500;
-            color: var(--secondary-color);
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9em;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--text-dark);
-        }
-
-        /* Shared Input and Select Styles */
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="password"],
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1em;
-            color: var(--text-dark);
-            background-color: #fcfcfc;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        /* Specific Select Styling for Dropdown Arrow */
-        .form-group select {
-            appearance: none; /* Remove default OS styling */
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 16px;
-            cursor: pointer;
-        }
-
-        .form-group input::placeholder {
-            color: #aaa;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: var(--secondary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
-        }
-
-        .password-wrapper {
-            position: relative;
-        }
-
-        .password-wrapper input {
-            padding-right: 45px;
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--text-light);
-        }
-
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            font-size: 0.9em;
-        }
-
-        /* Custom Checkbox */
-        .checkbox-container {
-            display: block;
-            position: relative;
-            padding-left: 28px;
-            cursor: pointer;
-            font-size: 0.9em;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            color: var(--text-light);
-        }
-
-        .checkbox-container input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-        }
-
-        .checkmark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 20px;
-            width: 20px;
-            background-color: #eee;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        .checkbox-container:hover input ~ .checkmark {
-            background-color: #ccc;
-        }
-        
-        .checkbox-container input:checked ~ .checkmark {
-            background-color: var(--primary-color);
-        }
-
-        .checkbox-container .checkmark:after {
-            content: "";
-            position: absolute;
-            display: none;
-        }
-
-        .checkbox-container input:checked ~ .checkmark:after {
-            display: block;
-        }
-
-        .checkbox-container .checkmark:after {
-            left: 7px;
-            top: 3px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 3px 3px 0;
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-            transform: rotate(45deg);
-        }
-
-        /* Buttons */
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 8px;
-            background: var(--primary-gradient);
-            color: white;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            text-transform: capitalize;
-        }
-
-        .btn-action:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-        }
-
-        .btn-action i {
-            margin-left: 10px;
-        }
-
-        /* Error Message Style added here */
-        .error-message {
-            background-color: #fcebeb; /* Light red background */
-            border: 1px solid #e74c3c; /* Red border */
-            color: #e74c3c; /* Red text */
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 0.95em;
-            font-weight: 500;
-            display: none; /* Hidden by default */
-        }
-
-        /* Offer Card */
-        .offer-card {
-            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
-            color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: var(--box-shadow);
-            text-align: center;
-            margin-top: 30px;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .offer-card h3 {
-            font-size: 1.6em;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: white;
-        }
-
-        .offer-card p {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .offer-card p:last-child {
-            margin-bottom: 0;
-            font-style: italic;
-            font-weight: 300;
-        }
-
-        /* Login Footer Styles (Code 2 Footer) */
-        .login-footer {
-            background-color: var(--card-bg);
-            padding: 40px 20px 20px;
-            border-top: 1px solid var(--border-color);
-            margin-top: 40px;
-            color: var(--text-light);
-            text-align: center;
-            font-size: 0.9em;
-            display: none; /* Hidden by default, shown on login pages */
-        }
-
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            text-align: left;
-            margin-bottom: 30px;
-        }
-
-        .footer-section {
-            flex: 1 1 200px;
-            margin: 20px;
-        }
-
-        .footer-section .footer-logo {
-            height: 60px;
-            width: 60px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-
-        .footer-section h4 {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-        }
-
-        .footer-section p, .footer-section ul {
-            font-size: 0.9em;
-            color: var(--text-light);
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 8px;
-        }
-
-        .footer-section ul li a {
-            color: var(--text-light);
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .footer-section ul li a:hover {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .footer-section .social-icons {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            justify-content: flex-start;
-        }
-
-        .footer-section .social-icons a {
-            font-size: 1.3em;
-            color: var(--text-light);
-            transition: color 0.3s ease;
-        }
-
-        .footer-section .social-icons a:hover {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .footer-bottom {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .footer-bottom p {
-            font-size: 0.85em;
-            color: var(--text-light);
-            flex-grow: 1;
-            text-align: center;
-        }
-
-        /* Floating Scroll-to-Top Button */
-        .scroll-to-top {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--primary-gradient);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.2em;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease, opacity 0.2s ease;
-            opacity: 0.8;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-        }
-
-        .scroll-to-top:hover {
-            transform: translateY(-3px);
-            opacity: 1;
-            text-decoration: none;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            header .logo span {
-                display: block;
-                font-size: 1em;
-            }
-
-            main {
-                padding: 15px;
-            }
-
-            h2 {
-                font-size: 1.6em;
-            }
-
-            .card {
-                padding: 25px 15px;
-            }
-
-            .card h3 {
-                font-size: 1.3em;
-            }
-
-            .form-options {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .btn-action {
-                padding: 12px 20px;
-                font-size: 1em;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: left;
-            }
-
-            .footer-section {
-                margin: 15px 0;
-                width: 100%;
-                text-align: left;
-            }
-
-            .footer-section .footer-logo {
-                margin: 0 0 15px;
-            }
-
-            .footer-section .social-icons {
-                justify-content: flex-start;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-            }
-        }
     </style>
 </head>
 <body>
-
-    <header>
+    <!-- Header -->
+    <header id="main-header">
         <div class="nav-bar">
-            <div class="logo" onclick="showPage('home');">
+            <div class="logo">
                 <img src="https://i.ibb.co/V0JySf5Y/1000030552.jpg" alt="Logo">
                 <span id="header-company-name">My Dream Digital</span>
             </div>
@@ -1106,25 +678,23 @@
                 <i class="fas fa-bars"></i>
             </div>
         </div>
-        <!-- Mobile Menu with Added Contact Info -->
+        <!-- START: Mobile Menu with new buttons added -->
         <div class="mobile-menu" id="mobileMenu">
-            <div class="menu-contact-info">
-                <p><i class="fas fa-envelope"></i> digitalmarketingbangladeshbd@gmail.com</p>
-                <p><i class="fas fa-phone"></i> +971561865929</p>
-            </div>
             <a href="#" onclick="showPage('home'); toggleMenu();">Home</a>
             <a href="#" onclick="toggleMenu();">About Us</a>
             <a href="#" onclick="toggleMenu();">Contact</a>
-            <button class="mobile-menu-button mobile-menu-login-btn" onclick="showPage('loginPage'); toggleMenu();">Login</button>
-            <button class="mobile-menu-button mobile-menu-signup-btn" onclick="showPage('signupPage'); toggleMenu();">Sign Up</button>
-            <button class="mobile-menu-button mobile-menu-subadmin-btn" onclick="showPage('subAdminLoginPage'); toggleMenu();">Sub Admin</button>
-            <button class="mobile-menu-button mobile-menu-admin-btn" onclick="showPage('adminLoginPage'); toggleMenu();">Admin</button>
+            <button class="mobile-menu-button mobile-menu-login-btn" onclick="showToast('Login Feature Coming Soon'); toggleMenu();">Login</button>
+            <button class="mobile-menu-button mobile-menu-signup-btn" onclick="showToast('Sign Up Feature Coming Soon'); toggleMenu();">Sign Up</button>
+            <button class="mobile-menu-button mobile-menu-subadmin-btn" onclick="showToast('Sub Admin Panel Coming Soon'); toggleMenu();">Sub Admin</button>
+            <button class="mobile-menu-button mobile-menu-admin-btn" onclick="showToast('Admin Panel Coming Soon'); toggleMenu();">Admin</button>
         </div>
+        <!-- END: Mobile Menu with new buttons added -->
     </header>
 
+    <!-- Main Content Container -->
     <main class="container" id="main-container">
 
-        <!-- 1. Home Page (Code 1) -->
+        <!-- 1. Home Page -->
         <section id="home-page" class="main-content">
             <div class="hero-section" id="hero-section">
                 <div id="hero-canvas-3d"></div>
@@ -1132,8 +702,8 @@
                     <h1 id="hero-title">My Dream Digital <span>E-learning</span> Platform</h1>
                     <p id="hero-subtitle">Transform your leisure time into a simple, smartphone-based journey of learning and earning.</p>
                     <div class="hero-action-buttons">
-                        <button class="btn btn-primary" onclick="showPage('loginPage')">Login</button>
-                        <button class="btn btn-accent" onclick="showPage('signupPage')">Sign Up</button>
+                        <button class="btn btn-primary" onclick="showToast('Login Feature Coming Soon')">Login</button>
+                        <button class="btn btn-accent" onclick="showToast('Sign Up Feature Coming Soon')">Sign Up</button>
                         <button class="btn btn-dark" onclick="showToast('Shop functionality not implemented.')">Shop Now</button>
                         <button class="btn btn-accent" onclick="downloadApp()">App Download</button>
                     </div>
@@ -1193,210 +763,16 @@
                 </div>
             </div>
 
-            <div class="section-header-btn">
+            <div class="section-header-btn" style="margin-top: 30px; margin-bottom: 30px;">
                 <i class="fas fa-star"></i> Our Popular Courses <i class="fas fa-star"></i>
             </div>
 
             <div id="course-list-container" class="course-grid"></div>
         </section>
         
-        <!-- LOGIN PAGE (CODE 2) -->
-        <section id="loginPage" class="page-section hidden">
-            <div class="breadcrumbs"><a onclick="showPage('home')">Home</a> > Login Member</div>
-            <h2>Login Your Member Account!</h2>
-            <div class="card">
-                <h3>Login</h3>
-                <p class="new-user">New User ? <a onclick="showPage('signupPage')">Create an Account</a></p>
-                <div class="error-message"></div>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="login-email"></label>
-                        <input type="text" id="login-email" placeholder="E-mail or Whatsapp *">
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password"></label>
-                        <div class="password-wrapper">
-                            <input type="password" id="login-password" placeholder="Password *">
-                            <i class="fas fa-eye toggle-password" data-target="login-password"></i>
-                        </div>
-                    </div>
-                    <div class="form-options">
-                        <label class="checkbox-container">Remember me
-                            <input type="checkbox" id="rememberMe">
-                            <span class="checkmark"></span>
-                        </label>
-                        <a onclick="showPage('forgotMemberPasswordPage')">Lost your password?</a>
-                    </div>
-                    <button type="submit" class="btn-action">Log In <i class="fas fa-arrow-right"></i></button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Sub-Admin Login Page -->
-        <section id="subAdminLoginPage" class="page-section hidden">
-            <div class="breadcrumbs"><a onclick="showPage('home')">Home</a> > Sub-Admin Login</div>
-            <h2>SUB ADMIN LOGIN</h2>
-            <div class="card">
-                <div class="error-message"></div>
-                <form id="subAdminLoginForm">
-                    <div class="form-group">
-                        <label for="sub-admin-account-type">Account Type</label>
-                        <select id="sub-admin-account-type">
-                            <option value="" disabled selected>Select your role</option>
-                            <option value="Counselor">Counselor</option>
-                            <option value="Senior Team Leader">Senior Team Leader</option>
-                            <option value="Team Leader">Team Leader</option>
-                            <option value="Trainer">Trainer</option>
-                            <option value="Teacher">Teacher</option>
-                            <option value="Account Manager">Account Manager</option>
-                            <option value="Photo editing teacher">Photo editing teacher</option>
-                            <option value="Video editing teacher">Video editing teacher</option>
-                            <option value="Senior counselor">Senior counselor</option>
-                            <option value="Helpline">Helpline</option>
-                            <option value="Web developer">Web developer</option>
-                            <option value="Marketing team">Marketing team</option>
-                            <option value="Qualification team">Qualification team</option>
-                            <option value="Senior teacher">Senior teacher</option>
-                            <option value="Senior Manager">Senior Manager</option>
-                            <option value="Counsellor Manager">Counsellor Manager</option>
-                            <option value="Marketing Manager">Marketing Manager</option>
-                            <option value="Accounte">Accounte</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sub-admin-email"></label>
-                        <input type="text" id="sub-admin-email" placeholder="SubAdmin E-mail or Whatsapp *">
-                    </div>
-                    <div class="form-group">
-                        <label for="sub-admin-password"></label>
-                        <div class="password-wrapper">
-                            <input type="password" id="sub-admin-password" placeholder="Password *">
-                            <i class="fas fa-eye toggle-password" data-target="sub-admin-password"></i>
-                        </div>
-                    </div>
-                    <a onclick="showPage('forgotSubAdminPasswordPage')">Forgot Password?</a>
-                    <button type="submit" class="btn-action" style="margin-top: 15px;">Sign In</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Admin Login Page -->
-        <section id="adminLoginPage" class="page-section hidden">
-            <div class="breadcrumbs"><a onclick="showPage('home')">Home</a> > Admin Login</div>
-            <h2>Log in to Admin Panel</h2>
-            <div class="card">
-                <div class="error-message"></div>
-                <form id="adminLoginForm">
-                    <div class="form-group">
-                        <label for="admin-email"></label>
-                        <input type="text" id="" placeholder="admin-email or phone number *">
-                    </div>
-                    <div class="form-group">
-                        <label for="admin-password"></label>
-                        <div class="password-wrapper">
-                            <input type="password" id="admin-password" placeholder="password *">
-                            <i class="fas fa-eye toggle-password" data-target="admin-password"></i>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-action">Sign In</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Signup Page -->
-        <section id="signupPage" class="page-section hidden">
-            <div class="breadcrumbs"><a onclick="showPage('home')">Home</a> > Enroll Member</div>
-            <h2>Create Your Account!</h2>
-            <div class="card">
-                <h3>Account Information</h3>
-                <p class="new-user">Already have an account? <a onclick="showPage('loginPage')">Sign In</a></p>
-                <div class="error-message"></div>
-                <form id="signupForm">
-                    <div class="form-group">
-                        <label for="signup-email"></label>
-                        <input type="email" id="signup-email" placeholder="Email address *">
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-whatsapp"></label>
-                        <input type="text" id="signup-whatsapp" placeholder="WhatsApp Number *">
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-fname"></label>
-                        <input type="text" id="signup-fname" placeholder="First Name *">
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-lname"></label>
-                        <input type="text" id="signup-lname" placeholder="Last Name *">
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-password"></label>
-                        <div class="password-wrapper">
-                            <input type="password" id="signup-password" placeholder="Password *">
-                            <i class="fas fa-eye toggle-password" data-target="signup-password"></i>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-referral"></label>
-                        <input type="text" id="signup-referral" placeholder="Referral code *">
-                    </div>
-                    <div class="form-options">
-                        <label class="checkbox-container">By clicking Create account, I agree that I have read and accepted the
-                            <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                    <button type="submit" class="btn-action">Sign Up <i class="fas fa-arrow-right"></i></button>
-                </form>
-            </div>
-            <div class="offer-card">
-                <h3>নতুনদের জন্য বিশেষ অফার!</h3>
-                <p>আজই Sign Up করে ফ্রি আইডি খুলুন এবং পেয়ে যান 💰 ২০০ টাকা ক্যাশব্যাক!</p>
-                <p>👍 সুযোগ হাতছাড়া করবেন না – শুরু হোক আপনার জয়যাত্রা! 🚀</p>
-            </div>
-        </section>
-
-        <!-- Forgot Password Page (Member) -->
-        <section id="forgotMemberPasswordPage" class="page-section hidden">
-            <div class="breadcrumbs"><a onclick="showPage('home')">Home</a> > forgot Member password</div>
-            <h2>Forgot Password!</h2>
-            <div class="card">
-                <h3>Forgot Password?</h3>
-                <p>Please type your email then submit. After Submit received your mail one verification code for forgot password</p>
-                <div class="error-message"></div>
-                <form id="forgotMemberPasswordForm">
-                    <div class="form-group">
-                        <label for="forgot-member-email">E-mail *</label>
-                        <input type="email" id="forgot-member-email" placeholder="Type your email">
-                    </div>
-                    <button type="submit" class="btn-action">Forgot Password <i class="fas fa-arrow-right"></i></button>
-                    <p style="text-align: center; margin-top: 15px;"><a onclick="showPage('loginPage')">Back to Login?</a></p>
-                </form>
-            </div>
-        </section>
-
-        <!-- Forgot Password Page (Sub-Admin) -->
-        <section id="forgotSubAdminPasswordPage" class="page-section hidden">
-            <div class="breadcrumbs"><a onclick="showPage('home')">Home</a> > forgot Sub-Admin password</div>
-            <h2>Forgot Password!</h2>
-            <div class="card">
-                <h3>Forgot Password?</h3>
-                <p>Please type your email then submit. After Submit received your mail one verification code for forgot password</p>
-                <div class="error-message"></div>
-                <form id="forgotSubAdminPasswordForm">
-                    <div class="form-group">
-                        <label for="forgot-subadmin-email">Email *</label>
-                        <input type="email" id="forgot-subadmin-email" placeholder="Type your email">
-                    </div>
-                    <button type="submit" class="btn-action">Send Reset Instructions</button>
-                    <p style="text-align: center; margin-top: 15px;"><a onclick="showPage('subAdminLoginPage')">Back to Login?</a></p>
-                </form>
-            </div>
-        </section>
-
     </main>
 
-    <!-- FULL WIDTH SECTION (CODE 1) -->
+    <!-- FULL WIDTH SECTION -->
     <section class="full-width-theme-section">
         <div class="event-content">
             <h2 class="event-title-line">E - LEARNING</h2>
@@ -1466,7 +842,7 @@
         </div>
     </section>
 
-    <!-- FOOTER 1: Main Website Footer -->
+    <!-- New Footer Design -->
     <footer id="main-footer" class="footer-container">
         
         <!-- 1. Contact Info Card -->
@@ -1513,51 +889,6 @@
 
     </footer>
 
-    <!-- FOOTER 2: Login Page Footer (Code 2) -->
-    <footer id="login-footer" class="login-footer">
-        <div class="footer-content">
-            <div class="footer-section about">
-                <img src="https://i.ibb.co/twNbmzCz/1000032814.jpg" alt="DigitalmyDream Logo" class="footer-logo">
-                <p>Learn how to use online social media in our society and how to earn online without wasting valuable time from online social media.</p>
-            </div>
-            <div class="footer-section links">
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Blogs</a></li>
-                </ul>
-            </div>
-            <div class="footer-section links">
-                <h4>Blogs</h4>
-                <ul>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Support</a></li>
-                    <li><a href="#">Courses</a></li>
-                    <li><a href="#">Terms of service</a></li>
-                    <li><a href="#">Privacy policy</a></li>
-                </ul>
-            </div>
-            <div class="footer-section contact-info">
-                <h4>Contact Info</h4>
-                <p>Phone: +971561865929</p>
-                <p>E-mail: mydreamd2424@gmail.com</p>
-                <p>Location: narayanganj, Bangladesh</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-telegram-plane"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-        </div>
-    </footer>
-    
-    <!-- Floating Scroll to Top Button -->
-    <a href="#" class="scroll-to-top"><i class="fas fa-arrow-up"></i></a>
-
     <div id="toast"></div>
 
     <!-- Firebase Scripts -->
@@ -1583,7 +914,7 @@
         let siteSettings = {};
         let banners = [];
 
-        // --- DYNAMIC CONTENT LOADERS (Code 1) ---
+        // --- DYNAMIC CONTENT LOADERS ---
 
         function loadSiteSettings() {
             database.ref('settings').on('value', (snapshot) => {
@@ -1676,7 +1007,7 @@
             });
 
             if (bannerItems.length > 1) {
-                addCarouselNavigation(bannerContainer, bannerItems.length);
+                addCarouselNavigation(container, bannerItems.length);
             }
         }
 
@@ -1807,37 +1138,26 @@
 
         // --- UI NAVIGATION ---
         function showPage(pageName) {
-            // Hide all pages first
-            document.querySelectorAll('.page-section, #home-page').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             
             const fullWidthSection = document.querySelector('.full-width-theme-section');
-            const upcomingSection = document.getElementById('upcoming-events-section');
-            const mainFooter = document.getElementById('main-footer');
-            const loginFooter = document.getElementById('login-footer');
             
-            // Specific handling for Home vs Auth Pages
-            if (pageName === 'home') {
+            const pageId = pageName + '-page';
+            const pageElement = document.getElementById(pageId);
+            if (pageElement) {
+                pageElement.classList.remove('hidden');
+                if (pageName === 'home') {
+                    if(fullWidthSection) fullWidthSection.style.display = 'flex';
+                    document.getElementById('upcoming-events-section').style.display = 'block';
+                } else {
+                    if(fullWidthSection) fullWidthSection.style.display = 'none';
+                    document.getElementById('upcoming-events-section').style.display = 'none';
+                }
+            } else {
                 document.getElementById('home-page').classList.remove('hidden');
                 if(fullWidthSection) fullWidthSection.style.display = 'flex';
-                if(upcomingSection) upcomingSection.style.display = 'block';
-                
-                if(mainFooter) mainFooter.style.display = 'flex';
-                if(loginFooter) loginFooter.style.display = 'none';
-            } else {
-                // For Login/Signup/Admin pages
-                const targetPage = document.getElementById(pageName);
-                if(targetPage) {
-                    targetPage.classList.remove('hidden');
-                }
-                // Hide home specific sections
-                if(fullWidthSection) fullWidthSection.style.display = 'none';
-                if(upcomingSection) upcomingSection.style.display = 'none';
-                
-                // Show Login Footer for Auth pages
-                if(mainFooter) mainFooter.style.display = 'none';
-                if(loginFooter) loginFooter.style.display = 'block';
+                document.getElementById('upcoming-events-section').style.display = 'block';
             }
-            
             window.scrollTo(0, 0);
         }
 
@@ -1846,6 +1166,11 @@
             if (menu) {
                 menu.classList.toggle('active'); 
             }
+        }
+
+        function sendContactMessage(e) { 
+            e.preventDefault(); 
+            showToast("Message Sent!"); 
         }
         
         function enrollCourse() { showToast("Feature Coming Soon"); }
@@ -1876,83 +1201,6 @@
             });
 
             item.classList.toggle('expanded');
-        }
-
-        // --- LOGIN SYSTEM LOGIC (CODE 2) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Password Toggle
-            const togglePasswordIcons = document.querySelectorAll('.toggle-password');
-            togglePasswordIcons.forEach(icon => {
-                icon.addEventListener('click', () => {
-                    const targetId = icon.dataset.target;
-                    const passwordInput = document.getElementById(targetId);
-                    if (passwordInput.type === 'password') {
-                        passwordInput.type = 'text';
-                        icon.classList.remove('fa-eye');
-                        icon.classList.add('fa-eye-slash');
-                    } else {
-                        passwordInput.type = 'password';
-                        icon.classList.remove('fa-eye-slash');
-                        icon.classList.add('fa-eye');
-                    }
-                });
-            });
-
-            // Form Submissions
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                form.addEventListener('submit', handleFormSubmission);
-            });
-
-            // Remember Me Logic
-            const loginEmailInput = document.getElementById('login-email');
-            const rememberCheckbox = document.getElementById('rememberMe');
-            if (localStorage.getItem('rememberedEmail') && loginEmailInput) {
-                loginEmailInput.value = localStorage.getItem('rememberedEmail');
-                if(rememberCheckbox) rememberCheckbox.checked = true;
-            }
-            
-            // Scroll to top button logic
-            const scrollToTopBtn = document.querySelector('.scroll-to-top');
-            if(scrollToTopBtn) {
-                scrollToTopBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-        });
-
-        function handleFormSubmission(e) {
-            e.preventDefault();
-
-            const errorMessageElement = this.querySelector('.error-message');
-            if (errorMessageElement) {
-                let message = '';
-                if (this.id === 'signupForm') {
-                    message = 'Account creation failed. Please try again later.';
-                } else if (this.id === 'loginForm' || this.id === 'subAdminLoginForm' || this.id === 'adminLoginForm') {
-                    message = 'Login failed. Incorrect password or email.';
-                } else if (this.id === 'forgotMemberPasswordForm' || this.id === 'forgotSubAdminPasswordForm') {
-                    message = 'Password reset request failed. Please check your email address.';
-                }
-
-                errorMessageElement.textContent = message;
-                errorMessageElement.style.display = 'block';
-
-                setTimeout(() => {
-                    errorMessageElement.style.display = 'none';
-                }, 5000);
-            }
-
-            if (this.id === 'loginForm') {
-                const emailInput = document.getElementById('login-email');
-                const rememberCheckbox = document.getElementById('rememberMe');
-                if (rememberCheckbox && rememberCheckbox.checked) {
-                    localStorage.setItem('rememberedEmail', emailInput.value);
-                } else {
-                    localStorage.removeItem('rememberedEmail');
-                }
-            }
         }
 
         // --- INITIALIZATION ---
