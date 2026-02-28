@@ -1250,6 +1250,29 @@
                 flex-direction: column;
             }
         }
+
+        /* SUCCESS POPUP STYLES */
+        .success-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .success-modal-overlay.show { display: flex; }
+        .success-modal-content {
+            background: #fff; width: 90%; max-width: 400px; border-radius: 15px; padding: 30px;
+            text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; animation: popUpAnim 0.4s ease;
+        }
+        @keyframes popUpAnim { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .success-modal-icon { width: 80px; height: 80px; background: #e8f5e9; border-radius: 50%; margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; color: #28a745; font-size: 3rem; }
+        .success-modal-title { font-size: 1.5rem; color: #28a745; margin-bottom: 10px; }
+        .success-modal-desc { color: #666; margin-bottom: 20px; }
+        .success-details-box { background: #f8f9fa; border: 1px solid #eee; border-radius: 10px; padding: 15px; text-align: left; margin-bottom: 25px; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+        .detail-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .detail-label { font-weight: 600; color: #555; }
+        .detail-value { color: #333; word-break: break-all; }
+        .btn-redirect-login { display: block; width: 100%; padding: 12px; background: var(--primary-gradient); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -1269,7 +1292,6 @@
         <!-- Mobile Menu -->
         <div class="mobile-menu" id="mobileMenu">
             <a href="#" onclick="showPage('home'); toggleMenu();">Home</a>
-            <a href="#" 
             <a href="#" onclick="toggleMenu();">Contact</a>
             <button class="mobile-menu-button mobile-menu-login-btn" onclick="showPage('studentPanel'); toggleMenu();">Login</button>
             <button class="mobile-menu-button mobile-menu-signup-btn" onclick="showPage('signup'); toggleMenu();">Sign Up</button>
@@ -1559,25 +1581,23 @@
                 </form>
             </div>
         </section>
-
-        <!-- Dashboard Page (After Login) -->
-        <section id="dashboard-page" class="page-section hidden">
-            <div class="breadcrumbs"><a href="#" onclick="showPage('home')">Home</a> > Dashboard</div>
-            <h2>Welcome, <span id="user-name-display">User</span>!</h2>
-            <div class="card">
-                <h3>Your Dashboard</h3>
-                <p>You are now logged in successfully.</p>
-                <div style="margin-top: 20px;">
-                    <p><strong>Email:</strong> <span id="user-email-display"></span></p>
-                    <p><strong>WhatsApp:</strong> <span id="user-whatsapp-display"></span></p>
-                </div>
-                <button class="btn-action" style="margin-top: 20px; background: var(--accent);" onclick="logoutUser()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </section>
         
     </main>
+
+    <!-- Success Modal Popup -->
+    <div class="success-modal-overlay" id="successModal">
+        <div class="success-modal-content">
+            <div class="success-modal-icon"> <i class="fas fa-check"></i> </div>
+            <h2 class="success-modal-title">Congratulations!</h2>
+            <p class="success-modal-desc">Your account has been successfully created.</p>
+            <div class="success-details-box">
+                <div class="detail-row"> <span class="detail-label">Referral Code:</span> <span class="detail-value" id="modal-referral">-</span> </div>
+                <div class="detail-row"> <span class="detail-label">Login ID:</span> <span class="detail-value" id="modal-login-id">-</span> </div>
+                <div class="detail-row"> <span class="detail-label">Password:</span> <span class="detail-value" id="modal-password">-</span> </div>
+            </div>
+            <button class="btn-redirect-login" onclick="closeModalAndLogin()">Login In Your Account: Click Here</button>
+        </div>
+    </div>
 
     <!-- FULL WIDTH SECTION -->
     <section class="full-width-theme-section" id="full-width-section">
@@ -2201,16 +2221,17 @@
                         localStorage.setItem('isLoggedIn', 'true');
                         localStorage.setItem('userId', userId);
                     }
+
+                    // Store extra info for dashboard
+                    localStorage.setItem('userName', userData.firstName + ' ' + userData.lastName);
+                    localStorage.setItem('userEmail', userData.email);
+                    localStorage.setItem('userWhatsApp', userData.whatsapp);
                     
                     showSuccess('login-success', 'Login successful! Redirecting...');
                     
-                    // Update user display
-                    document.getElementById('user-name-display').textContent = userData.firstName + ' ' + userData.lastName;
-                    document.getElementById('user-email-display').textContent = userData.email;
-                    document.getElementById('user-whatsapp-display').textContent = userData.whatsapp;
-                    
+                    // Redirect to dashboard.html
                     setTimeout(() => {
-                        showPage('dashboard');
+                        window.location.href = 'dashboard.html';
                     }, 1500);
                 } else {
                     showError('login-error', 'Incorrect password. Please try again.');
@@ -2285,15 +2306,14 @@
                 
                 await newUserRef.set(userData);
                 
-                showSuccess('signup-success', 'Account created successfully! Please login now.');
-                
+                // Show Success Modal
+                document.getElementById('modal-referral').innerText = referral || "None";
+                document.getElementById('modal-login-id').innerText = whatsapp;
+                document.getElementById('modal-password').innerText = password;
+                document.getElementById('successModal').classList.add('show');
+
                 // Clear form
                 document.getElementById('signupForm').reset();
-                
-                // Redirect to login after 2 seconds
-                setTimeout(() => {
-                    showPage('studentPanel');
-                }, 2000);
                 
             } catch (error) {
                 console.error('Signup error:', error);
@@ -2302,6 +2322,11 @@
             
             setButtonLoading('signup-btn', false, 'Sign Up <i class="fas fa-arrow-right"></i>');
         });
+
+        function closeModalAndLogin() {
+            document.getElementById('successModal').classList.remove('show');
+            showPage('studentPanel');
+        }
 
         // Sub-Admin Login Handler
         document.getElementById('subAdminLoginForm').addEventListener('submit', async function(e) {
@@ -2342,11 +2367,8 @@
                         
                         showSuccess('subadmin-success', 'Login successful! Welcome ' + accountType);
                         
-                        document.getElementById('user-name-display').textContent = foundUser.name || accountType;
-                        document.getElementById('user-email-display').textContent = foundUser.email;
-                        
                         setTimeout(() => {
-                            showPage('dashboard');
+                            window.location.href = 'dashboard.html';
                         }, 1500);
                     } else {
                         showError('subadmin-error', 'Invalid credentials or role mismatch.');
@@ -2400,11 +2422,8 @@
                         
                         showSuccess('admin-success', 'Admin login successful!');
                         
-                        document.getElementById('user-name-display').textContent = 'Admin';
-                        document.getElementById('user-email-display').textContent = foundAdmin.email;
-                        
                         setTimeout(() => {
-                            showPage('dashboard');
+                            window.location.href = 'dashboard.html';
                         }, 1500);
                     } else {
                         showError('admin-error', 'Invalid admin credentials.');
@@ -2468,43 +2487,6 @@
             }
         });
 
-        // Logout Function
-        function logoutUser() {
-            currentUser = null;
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('userRole');
-            showToast('Logged out successfully!');
-            showPage('home');
-        }
-
-        // Check if user is already logged in
-        function checkLoginStatus() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const userId = localStorage.getItem('userId');
-            
-            if (isLoggedIn === 'true' && userId) {
-                // Load user data
-                database.ref('users/' + userId).once('value').then(snapshot => {
-                    if (snapshot.exists()) {
-                        const userData = snapshot.val();
-                        currentUser = { uid: userId, ...userData };
-                        
-                        document.getElementById('user-name-display').textContent = userData.firstName + ' ' + userData.lastName;
-                        document.getElementById('user-email-display').textContent = userData.email;
-                        document.getElementById('user-whatsapp-display').textContent = userData.whatsapp;
-                    }
-                });
-            }
-            
-            // Load remembered email
-            const rememberedEmail = localStorage.getItem('rememberedEmail');
-            if (rememberedEmail) {
-                document.getElementById('login-email').value = rememberedEmail;
-                document.getElementById('rememberMe').checked = true;
-            }
-        }
-
         // Password Toggle Visibility
         document.querySelectorAll('.toggle-password').forEach(icon => {
             icon.addEventListener('click', () => {
@@ -2535,7 +2517,6 @@
             renderCourses();
             init3D(); 
             showPage('home');
-            checkLoginStatus();
             
             const mobileMenu = document.getElementById('mobileMenu');
             if (mobileMenu) {
